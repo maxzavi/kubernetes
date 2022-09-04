@@ -1,3 +1,8 @@
+# Kubernetes
+
+
+Use kubernetes cluster: cloud, onpremise, minikube, ect, to test you can use https://killercoda.com/
+
 # Namespace
 
 Create namespace in cluster, use manifest *namespace.yml*:
