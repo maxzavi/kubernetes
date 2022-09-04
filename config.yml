@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+data:
+  host: "myhostk8s"
+  port: "1453"
+  username: "myusername"
+metadata:
+  name: cm-db-apidemo
+---
+apiVersion: v1
+kind: Secret
+stringData:
+  password: "******"
+metadata:
+  name: s-db-apidemo
