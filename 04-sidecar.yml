@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: demo-sidecar
+spec:
+  selector:
+    matchLabels:
+      name: app-demo-sidecar
+  template:
+    metadata:
+      labels:
+        name: app-demo-sidecar
+    spec:
+      volumes:
+      - name: logs-shared-vol
+      containers:
+        - name: app-container
+          image: alpine
+          resources:
+          command: ["/bin/sh"]
+          args: ["-c", "while true; do grep 'cpu ' /proc/stat | awk '{usage=($2+$4)*100/($2+$4+$5)} END {print usage}' >> /var/log/cpu-usage-log.txt; sleep 10; done"]
+          volumeMounts:
+          - name: logs-shared-vol
+            mountPath: /var/log/xx
+            subPath: xx
+        - name: sidecar-container
+          image: nginx:1.7.9
+          resources:
+          ports:
+            - name: http-port
+              containerPort: 80
+          volumeMounts:
+          - name: logs-shared-vol
+            mountPath: /usr/share/nginx/html # nginx-specific mount path
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: app-demo-sidecar
+spec:
+  type: NodePort
+  selector:
+    name: app-demo-sidecar
+  ports:
+    - name: http-port
+      port: 80
+      targetPort: http-port

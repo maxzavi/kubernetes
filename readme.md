@@ -8,7 +8,7 @@ Use kubernetes cluster: cloud, onpremise, minikube, ect, to test you can use htt
 Create namespace in cluster, use manifest *namespace.yml*:
 
 ```cmd
-kubectl apply -f namespace.yml
+kubectl apply -f 01-namespace.yml
 ```
 
 Validate
@@ -42,7 +42,7 @@ DB_PASSWORD="*******"
 So a configMap and a secret must be created, file config.yml
 
 ```cmd
-kubectl apply -f config.yml
+kubectl apply -f 02-config.yml
 ```
 The api image is in a private registry, access to it must be configured, as a secret:
 
@@ -59,7 +59,7 @@ kubectl create secret docker-registry cr-mzavaletav --docker-server='user.mycr.i
 Use the service.yml manifest that contains deployment and service
 
 ```cmd
-kubectl apply -f service.yml
+kubectl apply -f 03-service.yml
 ```
 
 
@@ -77,4 +77,9 @@ In this case, port is 31141, being nodeport you can use the ip of any node of th
 curl localhost:31141
 
 {"hostname":"apinodedemo-6fd97f4f7c-mz2wb","os":{"platform":"linux","release":"5.10.124-linuxkit"},"port":3000,"database":{"url":"myhostk8s","port":"1453","username":"myusername","password":"*************"}}
+```
+
+Add sidecar pattern, file **04-sidecar.yml**
+```cmd
+kubectl apply -f 04-sidecar.yml
 ```
