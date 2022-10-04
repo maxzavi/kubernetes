@@ -87,7 +87,7 @@ kubectl apply -f 04-sidecar.yml
 ```
 
 
-## Readiness
+## Liveness & Readiness
 Reference liveness and readiness https://medium.com/@pbaezab/liveness-and-readiness-en-1-minuto-a14bae50a8ef
 Use springboot app, with initial data (RestRepository) pending repo...
 For test, delete beers/1 with DELETE method
