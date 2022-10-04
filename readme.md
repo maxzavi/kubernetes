@@ -79,7 +79,32 @@ curl localhost:31141
 {"hostname":"apinodedemo-6fd97f4f7c-mz2wb","os":{"platform":"linux","release":"5.10.124-linuxkit"},"port":3000,"database":{"url":"myhostk8s","port":"1453","username":"myusername","password":"*************"}}
 ```
 
+## Sidecar
+
 Add sidecar pattern, file **04-sidecar.yml**
 ```cmd
 kubectl apply -f 04-sidecar.yml
 ```
+
+
+## Readiness
+Reference liveness and readiness https://medium.com/@pbaezab/liveness-and-readiness-en-1-minuto-a14bae50a8ef
+Use springboot app, with initial data (RestRepository) pending repo...
+For test, delete beers/1 with DELETE method
+
+```yml
+      containers:
+      - image: mzavaletav/api-sb-demo:2
+        imagePullPolicy: IfNotPresent
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /beers/1
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 2
+          successThreshold: 1
+          timeoutSeconds: 2
+```
+          

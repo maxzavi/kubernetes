@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  apinodedemo-liv
+  labels:
+    app:  apinodedemo-liv
+spec:
+  selector:
+    matchLabels:
+      app: apinodedemo-liv
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app:  apinodedemo-liv
+      annotations:
+        repo: https://github.com/maxzavi/nodeapidemo
+        swagger: n/a
+    spec:
+      containers:
+      - name:  apinodedemo-liv
+        resources:
+        image:  mzavaletav/api-sb-demo:2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort:  8080
+          name:  port
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /beers/1
+            port: 8080
+            scheme: HTTP
+          initialDelaySeconds: 10
+          periodSeconds: 2
+          successThreshold: 1
+          timeoutSeconds: 2          
+      imagePullSecrets:
+      - name: cr-mzavaletav
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apinodedemo-liv-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: apinodedemo-liv
+  ports:
+    - port: 8080
+      targetPort: 8080

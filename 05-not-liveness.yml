@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name:  apinodedemo
+  labels:
+    app:  apinodedemo
+spec:
+  selector:
+    matchLabels:
+      app: apinodedemo
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app:  apinodedemo
+      annotations:
+        repo: https://github.com/maxzavi/nodeapidemo
+        swagger: n/a
+    spec:
+      containers:
+      - name:  apinodedemo
+        resources:
+        image:  mzavaletav/api-sb-demo:2
+        imagePullPolicy: IfNotPresent
+        ports:
+        - containerPort:  8080
+          name:  port
+      imagePullSecrets:
+      - name: cr-mzavaletav
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: apinodedemo-nodeport
+spec:
+  type: NodePort
+  selector:
+    app: apinodedemo
+  ports:
+    - port: 8080
+      targetPort: 8080
