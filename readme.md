@@ -49,6 +49,11 @@ The api image is in a private registry, access to it must be configured, as a se
 ```cmd
 kubectl create secret docker-registry cr-mzavaletav --docker-server='user.mycr.io' --docker-username='mzavaletav' --docker-password='*******'
 ```
+Find configMap key or value:
+
+```cmd
+kubectl get cm -o yaml -A | grep test
+```
 
 **For dockerhub , the --docker-server argument is not required**
 
